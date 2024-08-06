@@ -7,19 +7,34 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
+[Serializable]
+public struct DiceRoll
+{
+    public int Number;
+    public int DiceSides;
+}
 
 [CreateAssetMenu(fileName = "Character Data/Character", menuName = "Character")]
 public class Character : ScriptableObject
 {
+    [Header("Attributes")]
+    public List<CharacterAttribute> Attributes;
+
+    public DiceRoll AttributeDiceRoll;
+    public DiceRoll HitPointsDiceRoll;
+    public DiceRoll GoldDiceRoll;
     public Race Race;
     public Sprite Icon;
 }
 
 public class CharacterData
 {
+    public List<CharacterAttributeData> Attributes;
     public string Name { get; set; }
     public Sprite Icon { get; set; }
-
+    public DiceRoll AttributeDiceRoll { get; set; }
+    public DiceRoll HitPointsDiceRoll { get; set; }
+    public DiceRoll GoldDiceRoll { get; set; }
     public Race Race;
     public ClassType Class;
     public int HitPoints { get; set; }
@@ -29,6 +44,16 @@ public class CharacterData
     {
         Name = characterSO.name;
         Icon = characterSO.Icon;
+
+        foreach (CharacterAttribute characterAttribute in characterSO.Attributes)
+        {
+            CharacterAttributeData newAttributeData = new CharacterAttributeData(characterAttribute);
+            Attributes.Add(newAttributeData);
+        }
+
+        AttributeDiceRoll = characterSO.AttributeDiceRoll;
+        HitPointsDiceRoll = characterSO.HitPointsDiceRoll;
+        GoldDiceRoll = characterSO.GoldDiceRoll;
         Race = characterSO.Race;
     }
 }
@@ -36,7 +61,27 @@ public class CharacterData
 [CreateAssetMenu(fileName = "Character Data/Attributes", menuName = "Race")]
 public class Race : ScriptableObject
 {
-    public Sprite Icon;
+    public struct StatModifier
+    {
+        public CharacterAttribute Stat;
+        public int ModValue;
+    }
+
+    public List<StatModifier> MinimumStats;
+    public List<StatModifier> StatModifiers;
+    public RacialAbility RacialAbility;
+    public List<ClassType> AllowedClasses;
+
+    public int GetStatMinimumStat(CharacterAttributeData attribute)
+    {
+        StatModifier mod = MinimumStats.FirstOrDefault(x => x.Stat == attribute.AttributeType);
+        return mod.ModValue;
+    }
+}
+
+[CreateAssetMenu(fileName = "Character Data/Attributes", menuName = "Racial Ability")]
+public class RacialAbility : ScriptableObject
+{
 }
 
 [CreateAssetMenu(fileName = "Character Data/Attributes", menuName = "Class")]
@@ -45,19 +90,146 @@ public class ClassType : ScriptableObject
     public Sprite Icon;
 }
 
+public class CharacterAttribute : ScriptableObject
+{
+    public int Value;
+    public AttributeMod Mods;
+}
+
+public class CharacterAttributeData
+{
+    public CharacterAttribute AttributeType;
+    public string AttributeName;
+    public int Value;
+    public AttributeMod Mods;
+
+    public CharacterAttributeData(CharacterAttribute characterAttribute)
+    {
+        AttributeName = characterAttribute.name;
+        AttributeType = characterAttribute;
+        Value = characterAttribute.Value;
+        Mods = characterAttribute.Mods;
+    }
+}
+
+/// <summary>
+/// An set of values representing the min and max of an attribute
+/// when finding what mod to add to an attribute.
+/// Based on an attribute's value, this object can return the desired mod.
+/// </summary>
+public struct AttributeMod
+{
+    public struct AttributeModRange
+    {
+        public int MinValue;
+        public int MaxValue;
+        public int Mod;
+    }
+
+    public List<AttributeModRange> ModRanges;
+
+    public int GetMod(int value)
+    {
+        int outOfRangeResult = 0;
+        if (value == 0)
+            value++;
+
+        foreach (AttributeModRange modRange in ModRanges)
+        {
+            if (value >= modRange.MinValue && value <= modRange.MaxValue)
+                return modRange.Mod;
+            outOfRangeResult = modRange.Mod;
+        }
+
+        return outOfRangeResult;
+    }
+}
+
 public class CharacterDataManager : MonoBehaviour
 {
     [SerializeField] private List<Character> _characters;
     private Dictionary<Character, CharacterData> _characterDatas = new();
+    private CharacterRandomizer _characterRandomizer;
     public int NumCharacters => _characters.Count;
+    public Dictionary<Character, CharacterData> CharacterDatas => _characterDatas;
+    public List<Character> Characters => _characters;
 
     private void Awake()
     {
         foreach (Character character in _characters)
         {
             CharacterData newCharacter = new CharacterData(character);
+            _characterRandomizer.RandomizeCharacter(newCharacter);
             _characterDatas.Add(character, newCharacter);
         }
+    }
+}
+
+public class CharacterRandomizer
+{
+    private CharacterAttributeCalculator _calc;
+
+    public void RandomizeCharacter(CharacterData newCharacter)
+    {
+        _calc.CalculateAttributes(newCharacter);
+        _calc.CalculateHitPoints(newCharacter);
+        _calc.GenerateClass(newCharacter);
+        _calc.CalculateGold(newCharacter);
+    }
+}
+
+public class CharacterAttributeCalculator
+{
+    public void CalculateAttributes(CharacterData data)
+    {
+        foreach (CharacterAttributeData attribute in data.Attributes)
+        {
+            attribute.Value = GetDiceRollValue(data.AttributeDiceRoll.Number, data.AttributeDiceRoll.DiceSides);
+            VerifyAttribute(attribute, data);
+        }
+    }
+
+    private void VerifyAttribute(CharacterAttributeData attribute, CharacterData data)
+    {
+        if (attribute.Value < data.Race.GetStatMinimumStat(attribute))
+        {
+            attribute.Value = data.Race.GetStatMinimumStat(attribute);
+        }
+    }
+
+    public void CalculateHitPoints(CharacterData data)
+    {
+        data.HitPoints = GetDiceRollValue(data.HitPointsDiceRoll.Number, data.HitPointsDiceRoll.DiceSides);
+
+        int CON = data.Attributes[4].Value;
+        data.HitPoints += data.Attributes[4].Mods.GetMod(CON);
+    }
+
+    public void GenerateClass(CharacterData data)
+    {
+        data.Class = GenerateApplicableClass(data.Race);
+    }
+
+    public void CalculateGold(CharacterData data)
+    {
+        data.Gold = GetDiceRollValue(data.GoldDiceRoll.Number, data.GoldDiceRoll.DiceSides);
+    }
+
+    private ClassType GenerateApplicableClass(Race dataRace)
+    {
+        int random = UnityEngine.Random.Range(0, dataRace.AllowedClasses.Count);
+        return dataRace.AllowedClasses[random];
+    }
+
+    public int GetDiceRollValue(int number, int diceSides)
+    {
+        int value = 0;
+        for (int i = 0; i < number; i++)
+        {
+            value += UnityEngine.Random.Range(1, diceSides + 1);
+        }
+
+        return value;
     }
 }
 
