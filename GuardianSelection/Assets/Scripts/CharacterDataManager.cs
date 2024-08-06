@@ -88,6 +88,8 @@ public class RacialAbility : ScriptableObject
 public class ClassType : ScriptableObject
 {
     public Sprite Icon;
+    public DiceRoll HitDice;
+    public CharacterAttribute PrimeStat;
 }
 
 public class CharacterAttribute : ScriptableObject
@@ -320,6 +322,25 @@ public class UICharacterSelectPanel : MonoBehaviour
         int leftIndex = middleIndex - 1;
         int rightIndex = middleIndex + 1;
 
+        for (int i = 0; i < 3; i++)
+        {
+            int positionIndex = middleIndex - (1 - i);
+            if (positionIndex == -1 || positionIndex > SelectManager.CharacterDataManager.NumCharacters - 1)
+                _characterWidgets[i].gameObject.SetActive(false);
+            else
+            {
+                _characterWidgets[i].gameObject.SetActive(true);
+                _characterWidgets[i].SetCharacter(SelectManager.CharacterDataManager.Characters[positionIndex]);
+            }
+
+            if (i == 1)
+            {
+                Character character = SelectManager.CharacterDataManager.Characters[positionIndex];
+                _characterName.text = character.name;
+                OnUpdateCharacters?.Invoke(SelectManager.CharacterDataManager.CharacterDatas[character]);
+            }
+        }
+        
         //_characterWidgets[0].SetCharacter(SelectManager.CharacterDataManager.Characters[leftIndex]);
         //_characterWidgets[1].SetCharacter(SelectManager.CharacterDataManager.Characters[middleIndex]);
         //_characterWidgets[2].SetCharacter(SelectManager.CharacterDataManager.Characters[rightIndex]);
@@ -337,7 +358,7 @@ public class UICharacterWidget : MonoBehaviour
     }
 }
 
-public class UICharacterAttributePanel : MonoBehaviour
+public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
 {
     [SerializeField] private TMP_Text _raceText;
     [SerializeField] private TMP_Text _classText;
@@ -387,11 +408,42 @@ public class UICharacterAttributePanel : MonoBehaviour
 
     #endregion
 
+    public UICharacterSelectManager SelectManager { get; set; }
+
     public void HandleCharacterChange(CharacterData data)
     {
         _raceText.text = data.Race.name;
         _classText.text = data.Class.name;
+        _racialAbilityText.text = data.Race.RacialAbility.name;
 
+        _strText.text = data.Attributes[0].AttributeName;
+        _intText.text = data.Attributes[1].AttributeName;
+        _wisText.text = data.Attributes[2].AttributeName;
+        _dexText.text = data.Attributes[3].AttributeName;
+        _conText.text = data.Attributes[4].AttributeName;
+        _chaText.text = data.Attributes[5].AttributeName;
+
+        _hpValueText.text = data.HitPoints.ToString();
+        _strValueText.text = data.Attributes[0].Value.ToString();
+        _intValueText.text = data.Attributes[1].Value.ToString();
+        _wisValueText.text = data.Attributes[2].Value.ToString();
+        _dexValueText.text = data.Attributes[3].Value.ToString();
+        _conValueText.text = data.Attributes[4].Value.ToString();
+        _chaValueText.text = data.Attributes[5].Value.ToString();
+
+        _strModifierText.text = data.Race.StatModifiers[0].ModValue > 0 ? data.Race.StatModifiers[0].ModValue.ToString() : "";
+        _intModifierText.text = data.Race.StatModifiers[1].ModValue > 0 ? data.Race.StatModifiers[1].ModValue.ToString() : "";
+        _wisModifierText.text = data.Race.StatModifiers[2].ModValue > 0 ? data.Race.StatModifiers[2].ModValue.ToString() : "";
+        _dexModifierText.text = data.Race.StatModifiers[3].ModValue > 0 ? data.Race.StatModifiers[3].ModValue.ToString() : "";
+        _conModifierText.text = data.Race.StatModifiers[4].ModValue > 0 ? data.Race.StatModifiers[4].ModValue.ToString() : "";
+        _chaModifierText.text = data.Race.StatModifiers[5].ModValue > 0 ? data.Race.StatModifiers[5].ModValue.ToString() : "";
+
+        _strTotalText.text = (data.Attributes[0].Value + data.Race.StatModifiers[0].ModValue).ToString();
+        _intTotalText.text = (data.Attributes[1].Value + data.Race.StatModifiers[1].ModValue).ToString();
+        _wisTotalText.text = (data.Attributes[2].Value + data.Race.StatModifiers[2].ModValue).ToString();
+        _dexTotalText.text = (data.Attributes[3].Value + data.Race.StatModifiers[3].ModValue).ToString();
+        _conTotalText.text = (data.Attributes[4].Value + data.Race.StatModifiers[4].ModValue).ToString();
+        _chaTotalText.text = (data.Attributes[5].Value + data.Race.StatModifiers[5].ModValue).ToString();
         SetClassDisplay(data);
     }
 
@@ -401,6 +453,15 @@ public class UICharacterAttributePanel : MonoBehaviour
         {
             classImage.color = _defaultClassColor;
             classImage.gameObject.SetActive(false);
+        }
+        
+        for (int i = 0; i < data.Race.AllowedClasses.Count; i++)
+        {
+            _displayedClassImages[i].gameObject.SetActive(true);
+            if (data.Race.AllowedClasses[i] == data.Race)
+                _displayedClassImages[i].color = _selectedClassColor;
+
+            _displayedClassImages[i].sprite = data.Race.AllowedClasses[i].Icon;
         }
     }
 }
