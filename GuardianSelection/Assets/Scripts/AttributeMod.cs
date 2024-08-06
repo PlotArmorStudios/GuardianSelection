@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 /// <summary>
@@ -5,8 +6,10 @@ using System.Collections.Generic;
 /// when finding what mod to add to an attribute.
 /// Based on an attribute's value, this object can return the desired mod.
 /// </summary>
+[Serializable]
 public struct AttributeMod
 {
+    [Serializable]
     public struct AttributeModRange
     {
         public int MinValue;

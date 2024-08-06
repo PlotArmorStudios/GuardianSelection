@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CharacterData
 {
-    public List<CharacterAttributeData> Attributes;
+    public List<CharacterAttributeData> Attributes = new();
     public string Name { get; set; }
     public Sprite Icon { get; set; }
     public DiceRoll AttributeDiceRoll { get; set; }
@@ -26,7 +26,6 @@ public class CharacterData
         }
 
         AttributeDiceRoll = characterSO.AttributeDiceRoll;
-        HitPointsDiceRoll = characterSO.HitPointsDiceRoll;
         GoldDiceRoll = characterSO.GoldDiceRoll;
         Race = characterSO.Race;
     }

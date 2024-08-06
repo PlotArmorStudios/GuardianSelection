@@ -19,10 +19,12 @@ public class CharacterAttributeCalculator
 
     public void CalculateHitPoints(CharacterData data)
     {
-        data.HitPoints = GetDiceRollValue(data.HitPointsDiceRoll.Number, data.HitPointsDiceRoll.DiceSides);
+        data.HitPoints = GetDiceRollValue(data.Class.HitDice.Number, data.Class.HitDice.DiceSides);
 
         int CON = data.Attributes[4].Value;
         data.HitPoints += data.Attributes[4].Mods.GetMod(CON);
+        if (data.HitPoints < 1)
+            data.HitPoints = 1;
     }
 
     public void GenerateClass(CharacterData data)

@@ -12,7 +12,9 @@ public interface IUpdateCharacters
 {
     public event Action<CharacterData> OnUpdateCharacters;
     public UICharacterSelectManager SelectManager { get; set; }
+    public void Initialize();
 }
+
 public class UICharacterSelectManager : MonoBehaviour
 {
     public event Action<CharacterData> OnCharacterChange;
@@ -22,6 +24,12 @@ public class UICharacterSelectManager : MonoBehaviour
     private List<IUpdateCharacters> _characterUpdaters;
 
     private void Awake()
+    {
+        CharacterDataManager = FindObjectOfType<CharacterDataManager>();
+        CharacterDataManager.OnDataLoaded += Initialize;
+    }
+    
+    private void Initialize()
     {
         CharacterDataManager = FindObjectOfType<CharacterDataManager>();
         _changeListeners = GetComponentsInChildren<IUpdateOnCharacterChange>().ToList();
@@ -36,6 +44,7 @@ public class UICharacterSelectManager : MonoBehaviour
         {
             characterUpdater.OnUpdateCharacters += UpdateSelectedCharacter;
             characterUpdater.SelectManager = this;
+            characterUpdater.Initialize();
         }
     }
 

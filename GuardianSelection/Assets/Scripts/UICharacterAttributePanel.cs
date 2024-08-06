@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
 {
+    [SerializeField] private TMP_Text _charNameText;
     [SerializeField] private TMP_Text _raceText;
     [SerializeField] private TMP_Text _classText;
     [SerializeField] private TMP_Text _racialAbilityText;
+    [SerializeField] private TMP_Text _goldValueText;
 
     [SerializeField] private Image _characterIcon;
     [SerializeField] private Image _raceImage;
@@ -20,13 +22,6 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
     #region Character Attributes
 
     [Header("Attribute Text")]
-    [SerializeField] private TMP_Text _strText;
-    [SerializeField] private TMP_Text _intText;
-    [SerializeField] private TMP_Text _wisText;
-    [SerializeField] private TMP_Text _dexText;
-    [SerializeField] private TMP_Text _conText;
-    [SerializeField] private TMP_Text _chaText;
-
     [SerializeField] private TMP_Text _hpValueText;
     [SerializeField] private TMP_Text _strValueText;
     [SerializeField] private TMP_Text _intValueText;
@@ -36,6 +31,7 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
     [SerializeField] private TMP_Text _chaValueText;
 
     [Header("Modifier Text")]
+    [SerializeField] private TMP_Text _hpModifierText;
     [SerializeField] private TMP_Text _strModifierText;
     [SerializeField] private TMP_Text _intModifierText;
     [SerializeField] private TMP_Text _wisModifierText;
@@ -44,6 +40,7 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
     [SerializeField] private TMP_Text _chaModifierText;
 
     [Header("Totals")]
+    [SerializeField] private TMP_Text _hpTotalText;
     [SerializeField] private TMP_Text _strTotalText;
     [SerializeField] private TMP_Text _intTotalText;
     [SerializeField] private TMP_Text _wisTotalText;
@@ -59,16 +56,17 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
     {
         _raceText.text = data.Race.name;
         _classText.text = data.Class.name;
-        _racialAbilityText.text = data.Race.RacialAbility.name;
+        _charNameText.text = data.Name;
+        _goldValueText.text = data.Gold.ToString();
+        _raceImage.sprite = data.Race.Icon;
+        _classImage.sprite = data.Class.Icon;
+        _characterIcon.sprite = data.Icon;
+        
+        int CON = data.Attributes[4].Value;
 
-        _strText.text = data.Attributes[0].AttributeName;
-        _intText.text = data.Attributes[1].AttributeName;
-        _wisText.text = data.Attributes[2].AttributeName;
-        _dexText.text = data.Attributes[3].AttributeName;
-        _conText.text = data.Attributes[4].AttributeName;
-        _chaText.text = data.Attributes[5].AttributeName;
+        _racialAbilityText.text = data.Race.RacialAbility != null ? data.Race.RacialAbility.name : "None";
 
-        _hpValueText.text = data.HitPoints.ToString();
+        _hpValueText.text = (data.HitPoints - data.Attributes[4].Mods.GetMod(CON)).ToString();
         _strValueText.text = data.Attributes[0].Value.ToString();
         _intValueText.text = data.Attributes[1].Value.ToString();
         _wisValueText.text = data.Attributes[2].Value.ToString();
@@ -76,37 +74,59 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
         _conValueText.text = data.Attributes[4].Value.ToString();
         _chaValueText.text = data.Attributes[5].Value.ToString();
 
-        _strModifierText.text = data.Race.StatModifiers[0].ModValue > 0 ? data.Race.StatModifiers[0].ModValue.ToString() : "";
-        _intModifierText.text = data.Race.StatModifiers[1].ModValue > 0 ? data.Race.StatModifiers[1].ModValue.ToString() : "";
-        _wisModifierText.text = data.Race.StatModifiers[2].ModValue > 0 ? data.Race.StatModifiers[2].ModValue.ToString() : "";
-        _dexModifierText.text = data.Race.StatModifiers[3].ModValue > 0 ? data.Race.StatModifiers[3].ModValue.ToString() : "";
-        _conModifierText.text = data.Race.StatModifiers[4].ModValue > 0 ? data.Race.StatModifiers[4].ModValue.ToString() : "";
-        _chaModifierText.text = data.Race.StatModifiers[5].ModValue > 0 ? data.Race.StatModifiers[5].ModValue.ToString() : "";
-
-        _strTotalText.text = (data.Attributes[0].Value + data.Race.StatModifiers[0].ModValue).ToString();
-        _intTotalText.text = (data.Attributes[1].Value + data.Race.StatModifiers[1].ModValue).ToString();
-        _wisTotalText.text = (data.Attributes[2].Value + data.Race.StatModifiers[2].ModValue).ToString();
-        _dexTotalText.text = (data.Attributes[3].Value + data.Race.StatModifiers[3].ModValue).ToString();
-        _conTotalText.text = (data.Attributes[4].Value + data.Race.StatModifiers[4].ModValue).ToString();
-        _chaTotalText.text = (data.Attributes[5].Value + data.Race.StatModifiers[5].ModValue).ToString();
-        SetClassDisplay(data);
+        _hpModifierText.text = data.Attributes[4].Mods.GetMod(CON) != 0
+            ? data.Attributes[4].Mods.GetMod(CON).ToString() : "";
+        _strModifierText.text = GetModifierString(data, 0);
+        _intModifierText.text = GetModifierString(data, 1);
+        _wisModifierText.text = GetModifierString(data, 2);
+        _dexModifierText.text = GetModifierString(data, 3);
+        _conModifierText.text = GetModifierString(data, 4);
+        _chaModifierText.text = GetModifierString(data, 5);
+        
+        _hpTotalText.text = (data.HitPoints).ToString();
+        _strTotalText.text = (data.Attributes[0].Value + GetModifierInt(data, 0)).ToString();
+        _intTotalText.text = (data.Attributes[1].Value + GetModifierInt(data, 1)).ToString();
+        _wisTotalText.text = (data.Attributes[2].Value + GetModifierInt(data, 2)).ToString();
+        _dexTotalText.text = (data.Attributes[3].Value + GetModifierInt(data, 3)).ToString();
+        _conTotalText.text = (data.Attributes[4].Value + GetModifierInt(data, 4)).ToString();
+        _chaTotalText.text = (data.Attributes[5].Value + GetModifierInt(data, 5)).ToString();
     }
 
-    private void SetClassDisplay(CharacterData data)
+    private string GetModifierString(CharacterData data, int modifierIndex)
     {
-        foreach (Image classImage in _displayedClassImages)
+        string result = string.Empty;
+        for (int i = 0; i < data.Race.StatModifiers.Count; i++)
         {
-            classImage.color = _defaultClassColor;
-            classImage.gameObject.SetActive(false);
+            if (data.Race.StatModifiers[i].Stat == data.Attributes[modifierIndex].AttributeType)
+            {
+                result = data.Race.StatModifiers[i].ModValue.ToString();
+                return result;
+            }
+            else
+            {
+                result = "";
+            }
         }
-        
-        for (int i = 0; i < data.Race.AllowedClasses.Count; i++)
-        {
-            _displayedClassImages[i].gameObject.SetActive(true);
-            if (data.Race.AllowedClasses[i] == data.Race)
-                _displayedClassImages[i].color = _selectedClassColor;
 
-            _displayedClassImages[i].sprite = data.Race.AllowedClasses[i].Icon;
+        return result;
+    }
+
+    private int GetModifierInt(CharacterData data, int modifierIndex)
+    {
+        int result = 0;
+        for (int i = 0; i < data.Race.StatModifiers.Count; i++)
+        {
+            if (data.Race.StatModifiers[i].Stat == data.Attributes[modifierIndex].AttributeType)
+            {
+                result = data.Race.StatModifiers[i].ModValue;
+                return result;
+            }
+            else
+            {
+                result = 0;
+            }
         }
+
+        return result;
     }
 }
