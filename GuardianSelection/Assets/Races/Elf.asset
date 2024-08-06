@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065104cfdef24c6f90fad46703655ebf, type: 3}
+  m_Name: Elf
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 0f8df089a071d4dde95c510653577463, type: 3}
+  MinimumStats:
+  - Stat: {fileID: 11400000, guid: a31bd4752e9cee04e8c8e48dc3fb6d62, type: 2}
+    ModValue: 9
+  StatModifiers:
+  - Stat: {fileID: 11400000, guid: 20cb81a8de0d10445892fe42b599461b, type: 2}
+    ModValue: -1
+  - Stat: {fileID: 11400000, guid: a7cb9a47a3d7c75478591827483a3ee1, type: 2}
+    ModValue: 1
+  AllowedClasses:
+  - {fileID: 11400000, guid: 9062a9091cdf3a64c827f75ae0cea203, type: 2}
+  - {fileID: 11400000, guid: e91ebc2a9e96cb944b9e18d6b952d65d, type: 2}
+  - {fileID: 11400000, guid: 29351bd9c9943cd40b2ed5ae840ee0cb, type: 2}
+  - {fileID: 11400000, guid: c007e4a008dd11c47b981e5dc9d3e34b, type: 2}
+  - {fileID: 11400000, guid: 98bbcf6d46b0c364bb6df30ac9b13329, type: 2}
+  - {fileID: 11400000, guid: 177359567d835b84fa23a4cffb59665a, type: 2}
+  RacialAbility: {fileID: 11400000, guid: 1439730f97d28ae4b899aa309d2edd5d, type: 2}

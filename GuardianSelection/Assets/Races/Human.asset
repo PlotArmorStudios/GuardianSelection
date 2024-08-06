@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065104cfdef24c6f90fad46703655ebf, type: 3}
+  m_Name: Human
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: d0001e27a76a8490293d0f3ddfe5849e, type: 3}
+  MinimumStats: []
+  StatModifiers: []
+  AllowedClasses:
+  - {fileID: 11400000, guid: 81486a43124b7f3459fd3f2494587c87, type: 2}
+  - {fileID: 11400000, guid: 9062a9091cdf3a64c827f75ae0cea203, type: 2}
+  - {fileID: 11400000, guid: e91ebc2a9e96cb944b9e18d6b952d65d, type: 2}
+  - {fileID: 11400000, guid: 29351bd9c9943cd40b2ed5ae840ee0cb, type: 2}
+  - {fileID: 11400000, guid: 98bbcf6d46b0c364bb6df30ac9b13329, type: 2}
+  - {fileID: 11400000, guid: 177359567d835b84fa23a4cffb59665a, type: 2}
+  - {fileID: 11400000, guid: c007e4a008dd11c47b981e5dc9d3e34b, type: 2}
+  RacialAbility: {fileID: 0}
