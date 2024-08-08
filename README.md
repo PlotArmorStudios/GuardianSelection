@@ -1,20 +1,22 @@
 # GuardianSelection
 
 **How To Build**
-Be sure to have Unity version 2022.3.23 installed through Unity’s Hub
-With Unity 2022.3.24 installed, navigate to the Projects section of the Unity Hub and click “Add”. Navigate to the location of the Guardian Selection: Ultimate repository, select the base project folder, then click “Open”. The project will appear in the Unity Hub’s project directory.
+- Be sure to have Unity version 2022.3.23 installed through Unity’s Hub
+- With Unity 2022.3.24 installed, navigate to the Projects section of the Unity Hub and click “Add”.
+- Navigate to the location of the Guardian Selection: Ultimate repository, select the base project folder, then click “Open”.
+- The project will appear in the Unity Hub’s project directory.
 
-**For Windows (Default)**
+**How to Build For Windows (Default)**
 - Once open, Go to File > Build Settings
 - Select Windows from the Platform list
 - Select Switch Platform
 - Select Build to create the build, or Build and Run to create and run the build on the specified platform
 
-**For Web**
+**How to Build For Web**
 - Once opened, Go to File > Build Settings
 - Select WebGL from the Platform list
 - Click Switch Platform
-- Choose Build to build your application into a Player, or Build and Run to build the application and open it on your target platform
+- Choose Build to build your application into a Player, or Build and Run to build the application and open it on your target platform.
 
 **Dependencies**
 - Character Portraits Pack 8
