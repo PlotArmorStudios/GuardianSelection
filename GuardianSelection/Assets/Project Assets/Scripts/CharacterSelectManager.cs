@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Objects that respond to character update events.
+/// </summary>
 public interface IUpdateOnCharacterChange
 {
     public CharacterSelectManager SelectManager { get; set; }
@@ -14,6 +17,10 @@ public interface IInitializeAfterLoad
     public void Initialize();
 }
 
+/// <summary>
+/// Objects responsible for sending out
+/// character update events.
+/// </summary>
 public interface IUpdateCharacters
 {
     public event Action<CharacterData> OnUpdateCharacters;
@@ -26,6 +33,7 @@ public class CharacterSelectManager : MonoBehaviour
     public event Action<CharacterData> OnCharacterChange;
     public CharacterDataManager CharacterDataManager { get; set; }
     private CharacterData _currentSelectedCharacter;
+    
     private List<IUpdateOnCharacterChange> _changeListeners;
     private List<IInitializeAfterLoad> _toBeInitialized;
     private List<IUpdateCharacters> _characterUpdaters;

@@ -1,5 +1,9 @@
 public class CharacterAttributeCalculator
 {
+    /// <summary>
+    /// Randomly set the values of each of a character's stats.
+    /// </summary>
+    /// <param name="data"></param>
     public void CalculateAttributes(CharacterData data)
     {
         foreach (CharacterAttributeData attribute in data.Attributes)
@@ -9,6 +13,12 @@ public class CharacterAttributeCalculator
         }
     }
 
+    /// <summary>
+    /// Ensures stats meet their minimum stat requirements
+    /// after stat randomization.
+    /// </summary>
+    /// <param name="attribute"></param>
+    /// <param name="data"></param>
     private void VerifyAttribute(CharacterAttributeData attribute, CharacterData data)
     {
         if (attribute.Value < data.Race.GetStatMinimumStat(attribute))
@@ -27,6 +37,11 @@ public class CharacterAttributeCalculator
             data.HitPoints = 1;
     }
 
+    /// <summary>
+    /// Sets the class of a character randomly
+    /// based on the classes available to that race.
+    /// </summary>
+    /// <param name="data"> The character of whom to generate the class. </param>
     public void GenerateClass(CharacterData data)
     {
         data.Class = GenerateApplicableClass(data.Race);
@@ -43,6 +58,12 @@ public class CharacterAttributeCalculator
         return dataRace.AllowedClasses[random];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="number"> The number of times to roll the dice. </param>
+    /// <param name="diceSides"> The number of sides of the dice. </param>
+    /// <returns></returns>
     public int GetDiceRollValue(int number, int diceSides)
     {
         int value = 0;

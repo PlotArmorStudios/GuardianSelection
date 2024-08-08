@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Keeps track of what model is currently selected based on character data.
+/// Updates and keeps track of what model
+/// is currently selected based on character data.
 /// </summary>
 public class CharacterModelManager : MonoBehaviour, IUpdateOnCharacterChange, IInitializeAfterLoad
 {

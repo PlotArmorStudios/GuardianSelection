@@ -14,10 +14,6 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
     [SerializeField] private Image _characterIcon;
     [SerializeField] private Image _raceImage;
     [SerializeField] private Image _classImage;
-    [SerializeField] private List<Image> _displayedClassImages;
-
-    [SerializeField] private Color _selectedClassColor = Color.blue;
-    [SerializeField] private Color _defaultClassColor = Color.white;
 
     #region Character Attributes
 

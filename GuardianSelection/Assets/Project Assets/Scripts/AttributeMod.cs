@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 /// <summary>
 /// An set of values representing the min and max of an attribute
-/// when finding what mod to add to an attribute.
+/// when finding what mod to add to other attributes.
 /// Based on an attribute's value, this object can return the desired mod.
 /// </summary>
 [Serializable]

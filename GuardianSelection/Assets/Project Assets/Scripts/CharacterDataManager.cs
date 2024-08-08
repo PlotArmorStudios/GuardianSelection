@@ -11,6 +11,10 @@ public struct DiceRoll
     public int DiceSides;
 }
 
+/// <summary>
+/// Initialize character data
+/// to be accessed by other components.
+/// </summary>
 public class CharacterDataManager : MonoBehaviour
 {
     public event Action OnDataLoaded;
@@ -19,7 +23,6 @@ public class CharacterDataManager : MonoBehaviour
     private CharacterRandomizer _characterRandomizer;
     public List<CharacterData> _characterDataList = new();
 
-    public int NumCharacters => _characters.Count;
     public Dictionary<Character, CharacterData> CharacterDatas => _characterDatas;
     public List<CharacterData> CharacterDataList => _characterDataList;
 

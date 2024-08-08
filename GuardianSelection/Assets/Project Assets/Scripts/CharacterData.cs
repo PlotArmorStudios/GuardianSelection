@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Data transfer objects for Character
+/// scriptable objects.
+/// </summary>
 public class CharacterData
 {
     public List<CharacterAttributeData> Attributes = new();
