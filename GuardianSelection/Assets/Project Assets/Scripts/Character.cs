@@ -12,4 +12,5 @@ public class Character : ScriptableObject
     public DiceRoll GoldDiceRoll;
     public Race Race;
     public Sprite Icon;
+    public GameObject Model;
 }

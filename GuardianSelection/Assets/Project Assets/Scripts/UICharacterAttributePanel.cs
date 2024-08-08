@@ -50,7 +50,7 @@ public class UICharacterAttributePanel : MonoBehaviour, IUpdateOnCharacterChange
 
     #endregion
 
-    public UICharacterSelectManager SelectManager { get; set; }
+    public CharacterSelectManager SelectManager { get; set; }
 
     public void HandleCharacterChange(CharacterData data)
     {

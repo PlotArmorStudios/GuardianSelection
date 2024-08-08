@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UICharacterSelectPanel : MonoBehaviour, IUpdateCharacters
 {
     public event Action<CharacterData> OnUpdateCharacters;
-    public UICharacterSelectManager SelectManager { get; set; }
+    public CharacterSelectManager SelectManager { get; set; }
 
     [SerializeField] private TMP_Text _characterName;
     [SerializeField] private Button _randomizeButton;

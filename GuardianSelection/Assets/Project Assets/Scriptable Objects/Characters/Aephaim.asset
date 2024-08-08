@@ -30,3 +30,4 @@ MonoBehaviour:
     DiceSides: 6
   Race: {fileID: 11400000, guid: c31cb4e529cdbed4eb06a193cc425064, type: 2}
   Icon: {fileID: 21300000, guid: 1cee30ba7199a43a4a6020f5ab1cd2c6, type: 3}
+  Model: {fileID: 613266220056882638, guid: c5fe66c62cbccc0469ab913221cd2f34, type: 3}

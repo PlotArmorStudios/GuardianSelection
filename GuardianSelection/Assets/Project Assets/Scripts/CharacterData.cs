@@ -11,6 +11,7 @@ public class CharacterData
     public DiceRoll GoldDiceRoll { get; set; }
     public Race Race;
     public ClassType Class;
+    public GameObject Model;
     public int HitPoints { get; set; }
     public int Gold { get; set; }
 
@@ -28,5 +29,6 @@ public class CharacterData
         AttributeDiceRoll = characterSO.AttributeDiceRoll;
         GoldDiceRoll = characterSO.GoldDiceRoll;
         Race = characterSO.Race;
+        Model = characterSO.Model;
     }
 }
