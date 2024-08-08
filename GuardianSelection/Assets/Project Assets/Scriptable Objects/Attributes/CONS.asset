@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a7b90f97b14905bdf0951799b8b32a, type: 3}
+  m_Name: CONS
+  m_EditorClassIdentifier: 
+  Value: 0
+  Mods:
+    ModRanges:
+    - MinValue: 3
+      MaxValue: 3
+      Mod: -3
+    - MinValue: 4
+      MaxValue: 5
+      Mod: -2
+    - MinValue: 6
+      MaxValue: 8
+      Mod: -1
+    - MinValue: 9
+      MaxValue: 12
+      Mod: 0
+    - MinValue: 13
+      MaxValue: 15
+      Mod: 1
+    - MinValue: 16
+      MaxValue: 17
+      Mod: 2
+    - MinValue: 18
+      MaxValue: 18
+      Mod: 3
