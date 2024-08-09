@@ -2,7 +2,7 @@
 **Web Build**
 https://protagonist-plot-armor.itch.io/guardian-selection-ultimate
 
-**Windows Build**
+**Windows Build (Stretch Goals)**
 https://drive.google.com/file/d/1k8NmB5gLvmwV8UxWdS6E73V53OH1bVAr/view?usp=sharing
 
 **How To Build**
