@@ -1,4 +1,9 @@
 # GuardianSelection
+**Web Build**
+https://protagonist-plot-armor.itch.io/guardian-selection-ultimate
+
+**Windows Build**
+https://drive.google.com/file/d/1k8NmB5gLvmwV8UxWdS6E73V53OH1bVAr/view?usp=sharing
 
 **How To Build**
 - Be sure to have Unity version 2022.3.23 installed through Unity’s Hub
