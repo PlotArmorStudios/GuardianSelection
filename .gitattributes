@@ -2,3 +2,7 @@ GuardianSelection/Library/PackageCache/com.unity.burst@1.8.13/.Runtime/libburst-
 GuardianSelection/GuardianSelection/Assets/Scenes/GuardianSelect_StretchScene.unity filter=lfs diff=lfs merge=lfs -text
 GuardianSelection/Assets/Scenes/GuardianSelect_StretchScene.unity filter=lfs diff=lfs merge=lfs -text
 GuardianSelection/Assets/Project[[:space:]]Assets/Scenes/GuardianSelect_StretchScene.unity filter=lfs diff=lfs merge=lfs -text
+ filter=lfs diff=lfs merge=lfs -text
+Builds/AfterTimeLimit_StretchGoals_Windows/GuardianSelection_Data/sharedassets0.assets filter=lfs diff=lfs merge=lfs -text
+Builds/AfterTimeLimit_StretchGoals_Windows/GuardianSelection_Data/sharedassets0.assets.resS filter=lfs diff=lfs merge=lfs -text
+Builds/AfterTimeLimit_StretchGoals_Windows/GuardianSelection_Data/level0 filter=lfs diff=lfs merge=lfs -text
